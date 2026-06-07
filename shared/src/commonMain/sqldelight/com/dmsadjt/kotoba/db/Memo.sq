@@ -1,0 +1,20 @@
+CREATE TABLE memos (
+    id INTEGER PRIMARY KEY,
+    word TEXT NOT NULL UNIQUE,
+    reading TEXT NOT NULL,
+    meaning TEXT NOT NULL,
+    savedAt INTEGER NOT NULL
+);
+
+getAll:
+SELECT * FROM memos ORDER BY savedAt DESC;
+
+insert:
+INSERT OR IGNORE INTO memos(word, reading, meaning, savedAt)
+VALUES (?, ?, ?, ?);
+
+search:
+SELECT * FROM memos WHERE word LIKE ? OR reading LIKE ? OR meaning LIKE ? ORDER BY savedAt DESC;
+
+deleteById:
+DELETE FROM memos WHERE id = ?;
