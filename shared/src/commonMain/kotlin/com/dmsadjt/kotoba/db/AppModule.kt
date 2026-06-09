@@ -11,5 +11,5 @@ val appModule = module {
     single { get<KotobaDatabase>().memoQueries }
     single { MemoRepository(get()) }
     viewModel { MemoViewModel(get()) }
-    viewModel { LookupViewModel(get(), get()) }
+    single { LookupViewModel(get(), get()) }
 }

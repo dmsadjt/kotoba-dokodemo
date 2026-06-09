@@ -9,7 +9,8 @@ class JvmDictionaryDataSource : DictionaryDataSource {
         appDir.mkdirs()
         val dbFile = java.io.File(appDir, "jmdict.db")
         if (!dbFile.exists()) {
-            val resource = Thread.currentThread().contextClassLoader
+            val resource = (Thread.currentThread().contextClassLoader
+                ?: JvmDictionaryDataSource::class.java.classLoader)
                 .getResourceAsStream("files/jmdict.db")
             println("Resource found: ${resource != null}")
             resource?.use { input ->

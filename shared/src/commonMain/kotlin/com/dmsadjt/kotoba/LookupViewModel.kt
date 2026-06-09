@@ -8,8 +8,7 @@ import androidx.lifecycle.ViewModel
 class LookupViewModel(
     private val memoRepository: MemoRepository,
     private val dictionaryDataSource: DictionaryDataSource
-) : ViewModel() {
-    var searchQuery by mutableStateOf("")
+) {    var searchQuery by mutableStateOf("")
         private set
 
     var searchResult by mutableStateOf<DictionaryEntry?>(null)

@@ -16,11 +16,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun LookupScreen(
-    viewModel: LookupViewModel = koinViewModel()
+    viewModel: LookupViewModel = koinInject()
 ) {
     Column(
         modifier = Modifier.fillMaxSize().padding(24.dp),
