@@ -18,3 +18,6 @@ SELECT * FROM memos WHERE word LIKE ? OR reading LIKE ? OR meaning LIKE ? ORDER 
 
 deleteById:
 DELETE FROM memos WHERE id = ?;
+
+isExists:
+SELECT COUNT(*) > 0 FROM memos WHERE word = :word;

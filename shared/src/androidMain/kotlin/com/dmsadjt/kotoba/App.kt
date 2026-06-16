@@ -3,7 +3,6 @@ package com.dmsadjt.kotoba
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -15,6 +14,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import com.dmsadjt.kotoba.screen.LookupScreen
+import com.dmsadjt.kotoba.screen.MemoListScreen
+
 @Composable
 actual fun App() {
     MaterialTheme {

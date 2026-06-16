@@ -22,6 +22,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import com.dmsadjt.kotoba.screen.LookupScreen
+import com.dmsadjt.kotoba.screen.MemoListScreen
 
 @Composable
 actual fun App() {

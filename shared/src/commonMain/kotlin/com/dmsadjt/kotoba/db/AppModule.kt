@@ -1,8 +1,10 @@
 package com.dmsadjt.kotoba.db
 
-import com.dmsadjt.kotoba.LookupViewModel
+import com.dmsadjt.kotoba.viewmodel.LookupViewModel
 import com.dmsadjt.kotoba.MemoRepository
-import com.dmsadjt.kotoba.MemoViewModel
+import com.dmsadjt.kotoba.viewmodel.MainViewModel
+import com.dmsadjt.kotoba.viewmodel.MemoShareViewModel
+import com.dmsadjt.kotoba.viewmodel.MemoViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
@@ -12,4 +14,6 @@ val appModule = module {
     single { MemoRepository(get()) }
     viewModel { MemoViewModel(get()) }
     single { LookupViewModel(get(), get()) }
+    viewModel { MainViewModel() }
+    viewModel { MemoShareViewModel(get(), get(), get()) }
 }

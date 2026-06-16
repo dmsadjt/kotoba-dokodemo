@@ -1,25 +1,45 @@
 package com.dmsadjt.kotoba
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
+import com.dmsadjt.kotoba.screen.MemoShareScreen
+import com.dmsadjt.kotoba.viewmodel.MainViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        enableEdgeToEdge()
-        super.onCreate(savedInstanceState)
+    private val mainViewModel: MainViewModel by viewModel()
 
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        if (intent.action == Intent.ACTION_SEND) getSharedWord()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        if (intent.action == Intent.ACTION_SEND) getSharedWord()
         setContent {
-            App()
+            val sharedWord = mainViewModel.sharedWord
+            if (sharedWord != null) {
+                MemoShareScreen(
+                    word = sharedWord,
+                    onDismiss = {
+                        mainViewModel.clearSharedWord()
+                        finish()
+                    }
+                )
+            } else {
+                App()
+            }
         }
     }
-}
 
-@Preview
-@Composable
-fun AppAndroidPreview() {
-    App()
+    private fun getSharedWord() {
+        val word = intent.getStringExtra(Intent.EXTRA_TEXT)
+        if (word != null) mainViewModel.updateSharedWord(word)
+    }
 }

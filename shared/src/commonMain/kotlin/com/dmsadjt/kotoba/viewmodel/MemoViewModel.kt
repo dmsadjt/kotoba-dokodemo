@@ -1,11 +1,12 @@
-package com.dmsadjt.kotoba
+package com.dmsadjt.kotoba.viewmodel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dmsadjt.kotoba.db.Memos
+import com.dmsadjt.kotoba.Memo
+import com.dmsadjt.kotoba.MemoRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.SharingStarted

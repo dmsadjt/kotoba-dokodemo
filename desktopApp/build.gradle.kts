@@ -26,7 +26,7 @@ compose.desktop {
             modules("java.sql")
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "com.dmsadjt.kotoba"
-            packageVersion = "1.0.0"
+            packageVersion = "1.0.1"
         }
     }
 }

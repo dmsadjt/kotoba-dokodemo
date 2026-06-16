@@ -23,6 +23,8 @@ class MemoRepository(private val queries: MemoQueries) {
 
     fun insert(memo:Memo) = queries.insert(memo.word, memo.reading, memo.meaning, memo.savedAt)
 
+    fun isExists(word: String): Boolean = queries.isExists(word).executeAsOne()
+
     fun deleteById(id: Long) = queries.deleteById(id)
 }
 

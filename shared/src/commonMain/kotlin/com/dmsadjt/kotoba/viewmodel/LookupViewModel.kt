@@ -1,9 +1,12 @@
-package com.dmsadjt.kotoba
+package com.dmsadjt.kotoba.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
+import com.dmsadjt.kotoba.DictionaryDataSource
+import com.dmsadjt.kotoba.DictionaryEntry
+import com.dmsadjt.kotoba.Memo
+import com.dmsadjt.kotoba.MemoRepository
 
 class LookupViewModel(
     private val memoRepository: MemoRepository,
@@ -23,10 +26,12 @@ class LookupViewModel(
     }
 
     fun saveMemo(entry: DictionaryEntry) {
-        memoRepository.insert(Memo(
-            word = entry.word,
-            reading = entry.reading,
-            meaning = entry.meaning
-        ))
+        memoRepository.insert(
+            Memo(
+                word = entry.word,
+                reading = entry.reading,
+                meaning = entry.meaning
+            )
+        )
     }
 }
