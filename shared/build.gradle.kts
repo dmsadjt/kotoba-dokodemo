@@ -50,6 +50,7 @@ kotlin {
         }
         jvmMain.dependencies {
             implementation(libs.sqldelight.jvm.driver)
+            implementation(libs.kuromoji.ipadic)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
