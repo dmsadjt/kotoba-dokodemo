@@ -24,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -214,6 +215,7 @@ fun RecordingToggle(isWatching: Boolean, onToggle: () -> Unit) {
 @Composable
 fun OcrResultTicket(entries: List<DictionaryEntry>, onDismiss: () -> Unit, onSave: (DictionaryEntry) -> Unit, windowState: WindowState) {
     val density = LocalDensity.current
+    val savedIds = remember { mutableStateListOf<Long>() }
 
     Column(
         modifier = Modifier
@@ -292,13 +294,19 @@ fun OcrResultTicket(entries: List<DictionaryEntry>, onDismiss: () -> Unit, onSav
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(VhsColors.Amber, stampShape(6.dp))
+                            .background(
+                                if (entry.id in savedIds) VhsColors.Teal else VhsColors.Amber,
+                                stampShape(6.dp)
+                            )
                             .border(2.dp, VhsColors.Ink, stampShape(6.dp))
-                            .clickable { onSave(entry) }
+                            .clickable(enabled = entry.id !in savedIds) {
+                                onSave(entry)
+                                savedIds.add(entry.id)
+                            }
                             .padding(vertical = 6.dp)
                     ) {
                         Text(
-                            "＋ ADD TO SHELF",
+                            if (entry.id in savedIds) "✓ ADDED" else "＋ ADD TO SHELF",
                             color = VhsColors.Ink,
                             fontWeight = FontWeight.Black,
                             letterSpacing = 1.sp,
