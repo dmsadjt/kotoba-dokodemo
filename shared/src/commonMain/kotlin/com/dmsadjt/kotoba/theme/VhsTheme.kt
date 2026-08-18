@@ -12,11 +12,15 @@ import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawOutline
+import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -39,13 +43,42 @@ object VhsColors {
     val Amber = Color(0xFFDFA236)
     val Teal = Color(0xFF2E6E68)
     val Cream = Color(0xFFFBF4E2)
+
+    /** Hard offset-print shadow tones: paper surfaces vs. the dark counter. */
+    val Shadow = Color(0x4D221A11)
+    val ShadowDark = Color(0x66000000)
 }
+
+/** Rotating spine palette so shelved tapes don't all look alike. */
+private val spineColors = listOf(VhsColors.Red, VhsColors.Teal, VhsColors.Amber, VhsColors.RedDark)
+
+/** Stable spine color for a word - same word, same tape. */
+fun spineColorFor(word: String): Color = spineColors[word.hashCode().mod(spineColors.size)]
 
 /** Ticket-stub shape: two opposite corners clipped, like a torn rental stub. */
 fun ticketShape(cut: Dp = 14.dp): Shape = CutCornerShape(topEnd = cut, bottomStart = cut)
 
 /** Smaller clipped-corner shape for stamp-like elements (buttons, badges). */
 fun stampShape(cut: Dp = 8.dp): Shape = CutCornerShape(topEnd = cut, bottomStart = cut)
+
+/**
+ * Hard offset shadow in the given shape - no blur, like misregistered print
+ * layers on cheap flyers. Apply BEFORE background/border so it draws beneath.
+ * Reserves end/bottom space for the shadow so it never spills past the
+ * element's own layout bounds.
+ */
+fun Modifier.hardShadow(
+    shape: Shape,
+    color: Color = VhsColors.Shadow,
+    offset: Dp = 4.dp
+): Modifier = this
+    .padding(end = offset, bottom = offset)
+    .drawBehind {
+        val px = offset.toPx()
+        translate(left = px, top = px) {
+            drawOutline(shape.createOutline(size, layoutDirection, this), color)
+        }
+    }
 
 @Composable
 fun VhsSectionHeader(label: String, accent: Color = VhsColors.Red) {
@@ -90,10 +123,13 @@ fun VhsCard(
     accent: Color = VhsColors.Ink,
     fill: Color = VhsColors.Paper,
     shape: Shape = ticketShape(),
+    shadow: Color = VhsColors.Shadow,
     content: @Composable () -> Unit
 ) {
     Box(
         modifier = modifier
+            .hardShadow(shape, shadow)
+            .clip(shape)
             .background(fill, shape)
             .border(BorderStroke(2.dp, accent), shape)
     ) {
