@@ -12,6 +12,6 @@ val jvmModule = module {
     single { DatabaseDriverFactory() }
     single<DictionaryDataSource> { JvmDictionaryDataSource() }
     single { JapaneseNormalizer() }
-    single { OcrLookupViewModel(get(), get())  }
+    single { OcrLookupViewModel(get(), get(), get())  }
     single { ClipboardWatcher(get()) }
 }

@@ -33,4 +33,28 @@ class AndroidDictionaryDataSource(context: Context) : DictionaryDataSource {
             } else null
         }
     }
+
+    override fun lookupBatch(wordList: List<String>): List<DictionaryEntry> {
+        if (wordList.isEmpty()) return emptyList()
+
+        val placeholders = wordList.joinToString(",") { "?" }
+        val cursor = db.rawQuery(
+            "SELECT id, word, reading, meaning FROM dictionary WHERE word IN ($placeholders)",
+            wordList.toTypedArray()
+        )
+        return cursor.use {
+            val results = mutableListOf<DictionaryEntry>()
+            while (it.moveToNext()) {
+                results.add(
+                    DictionaryEntry(
+                        id = it.getLong(0),
+                        word = it.getString(1),
+                        reading = it.getString(2),
+                        meaning = it.getString(3)
+                    )
+                )
+            }
+            results
+        }
+    }
 }
