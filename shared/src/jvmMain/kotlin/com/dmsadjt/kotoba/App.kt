@@ -4,6 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -70,7 +72,7 @@ actual fun App() {
             // is always a WindowPosition.Absolute we can offset while dragging.
             val screenSize = remember { Toolkit.getDefaultToolkit().screenSize }
             val popupWidth = 340
-            val popupHeight = 260
+            val popupHeight = (140 + searchResult.size.coerceAtMost(3) * 90).coerceAtMost(420)
             val ocrWindowState = rememberWindowState(
                 size = DpSize(popupWidth.dp, popupHeight.dp),
                 position = WindowPosition(
@@ -91,6 +93,7 @@ actual fun App() {
                 OcrResultTicket(
                     entries = searchResult,
                     onDismiss = { ocrLookupViewModel.clearResults() },
+                    onSave = { entry -> ocrLookupViewModel.saveMemo(entry)},
                     windowState = ocrWindowState
                 )
             }
@@ -209,7 +212,7 @@ fun RecordingToggle(isWatching: Boolean, onToggle: () -> Unit) {
 }
 
 @Composable
-fun OcrResultTicket(entries: List<DictionaryEntry>, onDismiss: () -> Unit, windowState: WindowState) {
+fun OcrResultTicket(entries: List<DictionaryEntry>, onDismiss: () -> Unit, onSave: (DictionaryEntry) -> Unit, windowState: WindowState) {
     val density = LocalDensity.current
 
     Column(
@@ -218,6 +221,7 @@ fun OcrResultTicket(entries: List<DictionaryEntry>, onDismiss: () -> Unit, windo
             .background(VhsColors.Cream)
             .border(3.dp, VhsColors.Ink)
             .padding(14.dp)
+            .verticalScroll(rememberScrollState())
     ) {
         // Drag by the header, same as grabbing a window title bar - this window is
         // undecorated (no native title bar), so dragging has to be done by hand.
@@ -284,6 +288,24 @@ fun OcrResultTicket(entries: List<DictionaryEntry>, onDismiss: () -> Unit, windo
                         color = VhsColors.Ink.copy(alpha = 0.85f),
                         fontSize = 13.sp
                     )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(VhsColors.Amber, stampShape(6.dp))
+                            .border(2.dp, VhsColors.Ink, stampShape(6.dp))
+                            .clickable { onSave(entry) }
+                            .padding(vertical = 6.dp)
+                    ) {
+                        Text(
+                            "＋ ADD TO SHELF",
+                            color = VhsColors.Ink,
+                            fontWeight = FontWeight.Black,
+                            letterSpacing = 1.sp,
+                            fontSize = 11.sp,
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+                    }
                 }
             }
         }

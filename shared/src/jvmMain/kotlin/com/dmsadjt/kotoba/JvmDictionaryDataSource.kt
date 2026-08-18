@@ -3,7 +3,7 @@ package com.dmsadjt.kotoba
 import java.sql.DriverManager
 
 class JvmDictionaryDataSource : DictionaryDataSource {
-    private val dbPath : String by lazy {
+    private val dbPath: String by lazy {
         println("dbPath lazy block running")
         val appDir = java.io.File(System.getProperty("user.home"), ".kotoba")
         appDir.mkdirs()
@@ -24,7 +24,8 @@ class JvmDictionaryDataSource : DictionaryDataSource {
 
     override fun lookup(word: String): DictionaryEntry? {
         val conn = DriverManager.getConnection("jdbc:sqlite:$dbPath")
-        val stmt = conn.prepareStatement("SELECT id, word, reading, meaning FROM dictionary WHERE word = ? LIMIT 1")
+        val stmt =
+            conn.prepareStatement("SELECT id, word, reading, meaning FROM dictionary WHERE word = ? LIMIT 1")
         stmt.setString(1, word)
         val rs = stmt.executeQuery()
         return if (rs.next()) {
@@ -35,5 +36,32 @@ class JvmDictionaryDataSource : DictionaryDataSource {
                 meaning = rs.getString("meaning")
             )
         } else null
+    }
+
+    override fun lookupBatch(wordList: List<String>): List<DictionaryEntry> {
+        if (wordList.isEmpty()) return emptyList()
+
+        val conn = DriverManager.getConnection("jdbc:sqlite:$dbPath")
+        val placeholders = wordList.joinToString(",") { "?" }
+        val stmt = conn.prepareStatement(
+            "SELECT id, word, reading, meaning FROM dictionary WHERE word IN ($placeholders)"
+        )
+        wordList.forEachIndexed { index, word ->
+            stmt.setString(index + 1, word)
+        }
+
+        val rs = stmt.executeQuery()
+        val results = mutableListOf<DictionaryEntry>()
+        while (rs.next()) {
+            results.add(
+                DictionaryEntry(
+                    id = rs.getLong("id"),
+                    word = rs.getString("word"),
+                    reading = rs.getString("reading"),
+                    meaning = rs.getString("meaning")
+                )
+            )
+        }
+        return results
     }
 }

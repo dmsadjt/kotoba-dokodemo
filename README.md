@@ -1,17 +1,26 @@
-This is a Kotlin Multiplatform project targeting Android, Desktop (JVM).
+# Kotoba Dokodemo
 
-* [/shared](./shared/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - [commonMain](./shared/src/commonMain/kotlin) is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    the [iosMain](./shared/src/iosMain/kotlin) folder would be the right place for such calls.
-    Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./shared/src/jvmMain/kotlin)
-    folder is the appropriate location.
+A Japanese dictionary lookup app built with Kotlin Multiplatform, targeting Android and Desktop (JVM).
+
+- Look up words from the Android share sheet or a desktop clipboard/OCR pipeline.
+- Shared dictionary logic and database (SQLDelight) live in one codebase across both platforms.
+
+## Prerequisites
+
+- JDK 17 or newer (required by Gradle 9 / AGP 9). The Gradle wrapper handles the Gradle version itself.
+- Android SDK with API level 36 installed, only if building the Android app (`compileSdk`/`targetSdk` 36, `minSdk` 24).
+
+## Project structure
+
+- [`shared/src/commonMain`](./shared/src/commonMain/kotlin) — code shared across all targets (dictionary lookup, database, view models, theming).
+- [`shared/src/androidMain`](./shared/src/androidMain) — Android-specific implementations.
+- [`shared/src/jvmMain`](./shared/src/jvmMain) — Desktop (JVM)-specific implementations, including the clipboard/OCR pipeline.
+- [`androidApp`](./androidApp) — Android application module.
+- [`desktopApp`](./desktopApp) — Desktop application module.
 
 ### Running the apps
 
-Use the run configurations provided by the run widget in your IDE's toolbar. You can also use these commands and options:
+Use the run configurations provided by the run widget in your IDE's toolbar, or these Gradle commands:
 
 - Android app: `./gradlew :androidApp:assembleDebug`
 - Desktop app:
