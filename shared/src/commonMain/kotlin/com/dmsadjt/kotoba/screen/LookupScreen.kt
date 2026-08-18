@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import com.dmsadjt.kotoba.theme.TearDivider
 import com.dmsadjt.kotoba.theme.VhsCard
 import com.dmsadjt.kotoba.theme.VhsColors
+import com.dmsadjt.kotoba.theme.hardShadow
 import com.dmsadjt.kotoba.theme.stampShape
 import com.dmsadjt.kotoba.theme.ticketShape
 import com.dmsadjt.kotoba.viewmodel.LookupViewModel
@@ -82,6 +83,7 @@ fun LookupScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .hardShadow(stampShape(6.dp), offset = 3.dp)
                         .background(VhsColors.Red, stampShape(6.dp))
                         .border(2.dp, VhsColors.Ink, stampShape(6.dp))
                         .clickable { viewModel.lookupWord(viewModel.searchQuery) }
@@ -142,6 +144,7 @@ fun LookupScreen(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .hardShadow(stampShape(6.dp), offset = 3.dp)
                             .background(if (isSaved) VhsColors.Teal else VhsColors.Amber, stampShape(6.dp))
                             .border(2.dp, VhsColors.Ink, stampShape(6.dp))
                             .clickable(enabled = !isSaved) {

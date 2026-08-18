@@ -30,6 +30,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
@@ -46,6 +48,7 @@ import com.dmsadjt.kotoba.screen.MemoListScreen
 import com.dmsadjt.kotoba.theme.VhsCard
 import com.dmsadjt.kotoba.theme.VhsColors
 import com.dmsadjt.kotoba.theme.TearDivider
+import com.dmsadjt.kotoba.theme.hardShadow
 import com.dmsadjt.kotoba.theme.stampShape
 import com.dmsadjt.kotoba.theme.ticketShape
 import com.dmsadjt.kotoba.viewmodel.OcrLookupViewModel
@@ -153,11 +156,28 @@ actual fun App() {
                 )
             }
 
-            // Content
-            Box(modifier = Modifier.fillMaxSize().padding(24.dp)) {
-                when (selectedScreen) {
-                    "lookup" -> LookupScreen()
-                    "memos" -> MemoListScreen()
+            // Content - the shop floor: lit from above, with the counter
+            // casting a soft shadow along the left seam.
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        Brush.verticalGradient(listOf(VhsColors.Paper, VhsColors.PaperDark))
+                    )
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .width(16.dp)
+                        .background(
+                            Brush.horizontalGradient(listOf(VhsColors.Shadow, Color.Transparent))
+                        )
+                )
+                Box(modifier = Modifier.fillMaxSize().padding(24.dp)) {
+                    when (selectedScreen) {
+                        "lookup" -> LookupScreen()
+                        "memos" -> MemoListScreen()
+                    }
                 }
             }
         }
@@ -171,6 +191,7 @@ fun StoreNavItem(label: String, selected: Boolean, onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
+            .hardShadow(stampShape(6.dp), VhsColors.ShadowDark, 3.dp)
             .background(fill, stampShape(6.dp))
             .border(1.dp, VhsColors.Ink.copy(alpha = if (selected) 1f else 0f), stampShape(6.dp))
             .clickable(onClick = onClick)
@@ -191,6 +212,7 @@ fun RecordingToggle(isWatching: Boolean, onToggle: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .hardShadow(stampShape(6.dp), VhsColors.ShadowDark, 3.dp)
             .background(if (isWatching) VhsColors.RedDark else VhsColors.CounterLight, stampShape(6.dp))
             .clickable(onClick = onToggle)
             .padding(horizontal = 12.dp, vertical = 10.dp),
@@ -217,12 +239,16 @@ fun OcrResultTicket(entries: List<DictionaryEntry>, onDismiss: () -> Unit, onSav
     val density = LocalDensity.current
     val savedIds = remember { mutableStateListOf<Long>() }
 
+    // Double frame - thick outer wall plus a thin inner lip, like the
+    // moulded tray inside a cassette case.
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(VhsColors.Cream)
             .border(3.dp, VhsColors.Ink)
-            .padding(14.dp)
+            .padding(5.dp)
+            .border(1.dp, VhsColors.Ink.copy(alpha = 0.25f))
+            .padding(10.dp)
             .verticalScroll(rememberScrollState())
     ) {
         // Drag by the header, same as grabbing a window title bar - this window is
@@ -294,6 +320,7 @@ fun OcrResultTicket(entries: List<DictionaryEntry>, onDismiss: () -> Unit, onSav
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .hardShadow(stampShape(6.dp), offset = 3.dp)
                             .background(
                                 if (entry.id in savedIds) VhsColors.Teal else VhsColors.Amber,
                                 stampShape(6.dp)
