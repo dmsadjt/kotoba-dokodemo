@@ -45,6 +45,7 @@ import androidx.compose.ui.window.rememberWindowState
 import com.dmsadjt.kotoba.ocr.ClipboardWatcher
 import com.dmsadjt.kotoba.screen.LookupScreen
 import com.dmsadjt.kotoba.screen.MemoListScreen
+import com.dmsadjt.kotoba.screen.ReviewScreen
 import com.dmsadjt.kotoba.theme.VhsCard
 import com.dmsadjt.kotoba.theme.VhsColors
 import com.dmsadjt.kotoba.theme.TearDivider
@@ -142,6 +143,11 @@ actual fun App() {
                     selected = selectedScreen == "memos",
                     onClick = { selectedScreen = "memos" }
                 )
+                StoreNavItem(
+                    label = "Review",
+                    selected = selectedScreen == "review",
+                    onClick = { selectedScreen = "review" }
+                )
 
                 Spacer(modifier = Modifier.height(4.dp))
                 TearDivider(color = VhsColors.Cream.copy(alpha = 0.25f))
@@ -177,6 +183,7 @@ actual fun App() {
                     when (selectedScreen) {
                         "lookup" -> LookupScreen()
                         "memos" -> MemoListScreen()
+                        "review" -> ReviewScreen()
                     }
                 }
             }

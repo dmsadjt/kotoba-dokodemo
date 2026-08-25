@@ -16,6 +16,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.dmsadjt.kotoba.screen.LookupScreen
 import com.dmsadjt.kotoba.screen.MemoListScreen
+import com.dmsadjt.kotoba.screen.ReviewScreen
 
 @Composable
 actual fun App() {
@@ -37,6 +38,12 @@ actual fun App() {
                         icon = { Text("🔍") },
                         label = { Text("Lookup") }
                     )
+                    NavigationBarItem(
+                        selected = selectedScreen == "review",
+                        onClick = { selectedScreen = "review" },
+                        icon = { Text("🎬") },
+                        label = { Text("Review") }
+                    )
                 }
             }
         ) { innerPadding ->
@@ -44,6 +51,7 @@ actual fun App() {
                 when (selectedScreen) {
                     "memos" -> MemoListScreen()
                     "lookup" -> LookupScreen()
+                    "review" -> ReviewScreen()
                 }
             }
         }

@@ -5,5 +5,10 @@ data class Memo(
     val word: String,
     val reading: String,
     val meaning: String,
-    val savedAt: Long = System.currentTimeMillis()
+    val savedAt: Long = System.currentTimeMillis(),
+    val easeFactor: Double = 2.5,
+    val intervalDays: Long = 0,
+    val repetitions: Long = 0,
+    val dueAt: Long = System.currentTimeMillis(),
+    val lastReviewedAt: Long? = null
 )

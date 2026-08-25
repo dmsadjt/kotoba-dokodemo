@@ -115,7 +115,7 @@ fun MemoItem(memo: Memo, onClick: () -> Unit = {}) {
                     .background(spine)
             )
             Column(modifier = Modifier.padding(14.dp)) {
-                Text(memo.word, color = VhsColors.Ink, fontWeight = FontWeight.Black, fontSize = 24.sp)
+                Text(memo.word, color = VhsColors.Ink, fontWeight = FontWeight.Medium, fontSize = 24.sp)
                 Text(memo.reading, color = VhsColors.Teal, fontWeight = FontWeight.Bold, fontSize = 13.sp)
                 Text(
                     memo.meaning,
