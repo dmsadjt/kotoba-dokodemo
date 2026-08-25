@@ -22,6 +22,9 @@ compose.desktop {
     application {
         mainClass = "com.dmsadjt.kotoba.MainKt"
         jvmArgs += listOf("--add-opens", "java.base/java.sql=ALL-UNNAMED")
+        buildTypes.release.proguard {
+            isEnabled.set(false)
+        }
         nativeDistributions {
             modules("java.sql")
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
